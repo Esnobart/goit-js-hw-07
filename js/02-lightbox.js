@@ -12,12 +12,7 @@ function galleryItem(arr) {
     return arr.map(({ preview, original, description }) =>
         `<li class="gallery__item">
             <a class="gallery__link" href="${original}">
-                <img
-                    class="gallery__image"
-                    src="${preview}"
-                    data-source="${original}"
-                    alt="${description}"
-                />
+               <img class="gallery__image" src="${preview}" alt="${description}" />
             </a>
         </li>`
     ).join('');
@@ -27,19 +22,19 @@ function handleClick(event) {
     event.preventDefault()
 
     if (event.target === event.currentTarget) {
-        return;
+        return gallery.next();
     }
 
-    const overlay = new SimpleLightBox('.gallery a', { captionsData: 'alt', captionDelay: 250 });
-    overlay.on(`show.simpleLightBox`, function () {
+    let overlay = new SimpleLightbox('.gallery__item a', { captionsData: "alt", captionDelay: 250 });
+    overlay.on('show.simplelightbox', function () {
         `
-       <img class="gallery__image " src="${galleryItems.original}" alt="${galleryItems.description}">
-       `
+        <img class="gallery__image " src="${galleryItems.original}" alt="${galleryItems.description}">
+        `
     });
 
     document.addEventListener("keydown", (event) => {
         if (event.code === "Escape") {
-            return modal.close();
+            return overlay.close();
         }
 
         return;

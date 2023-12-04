@@ -27,7 +27,7 @@ function galleryItem(arr) {
 function handleClick(event) {
     event.preventDefault()
 
-    if (event.target === event.currentTarget) {
+    if (event.target.nodeName.toLowerCase() !== 'img') {
         return;
     }
 
@@ -39,11 +39,16 @@ function handleClick(event) {
 
     modal.show()
 
-    document.addEventListener("keydown", (event) => {
-        if (event.code === "Escape") {
-            return modal.close();
-        }
+    const closeHandler = () => {
+        modal.close();
+        document.removeEventListener("keydown", escapeHandler);
+    };
 
-        return;
-    })
+    const escapeHandler = (event) => {
+        if (event.code === "Escape") {
+            closeHandler();
+        }
+    };
+
+    document.addEventListener("keydown", escapeHandler);
 }
